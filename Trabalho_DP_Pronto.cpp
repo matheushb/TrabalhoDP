@@ -9,17 +9,23 @@ char	userMot[c] = "testemot", senhaMot[c]="12345",
 	userAdm[c] = "testeadm", senhaAdm[c]="12345", 	   
 	placaCaminhao[4][8] = {"ABC1234","DEF5678","GHI9012","JKL3456"},
 	disponivelCaminhao[4][13] = {"disponível","indisponível","disponível","disponível"},
-	rotaCaminhao[4][20] = {"Zona 1","Zona 3","Zona 2","Zona 4"},  	     
+	rotaCaminhao[4][20] = {"Zona 1","Zona 3","Zona 2","Zona 4"}, 
+	   
 	dataColeta[6][15] = {"10/04/2023","09/04/2023","08/04/2023","07/04/2023","06/04/2023","Registrar Dia"},
-	jornada[12][6] = {"02:03","07:53","09:00","18:03","05:00","09:00","20:00","23:00","15:00","23:00","00:00","00:00"},
+	jornada[12][6] = {"02:03","07:53",
+	"09:00","18:03",
+	"05:00","09:00",
+	"20:00","23:00",
+	"15:00","23:00",
+        "00:00","00:00"},
         dataOcorrencia[4][12] = {"","30/03/2023","27/03/2023","20/03/2023"},
 	nomeOcorrencia[4][50] = {"Registrar Ocorrencia.","Falta de Combustível.","Conteiner Danificado.","Veículo com defeito.",},
 	mensagemOcorrencia[4][150] = {"","O caminhão DEF5678 está com falta de combustível.","Lixeira apresentando problemas na rota.","Caminhão apresentando defeitos em relação aos freios."},
 	respostaOcorrencia[4][150] = {"","Abastecimento Solicitado.","",""};
 	   
-char modo[15], modoCaminhao[15], resp, user[c], senha[c], msgLogin[16]="";
+char 	modo[15], modoCaminhao[15], resp, user[c], senha[c], msgLogin[16]="";
 		
-int lixoColetado[6] = {30230,28800,31000,36000,27000,33000}, opt = 0, opt2 = 0, cargo, indiceCaminhao[6] = {1,3,0,1,3,0};
+int lixoColetado[6] = {30230,28800,31000,36000,27000,33000}, opt = 0, opt2 = 0, cargo, indiceCaminhao[6] = {1,3,0,1,3,0}, contaLogin=0;
 bool login=false, edit=true, editOcorrencia=false, editCaminhao=true, sair=false;
 
 bool verificaHorario(char horario[]);
@@ -45,14 +51,17 @@ int main() {
 						printf("\n\n\n\n\n\n\n                                                  1-Motoristas\n                                                  2-Admnistradores\n\n\n                                                  9-Sair\n\n                                                  %s\n\n------------------------------------------------------------------------------------------------------------------------>",msgLogin);
 						scanf("%i",&opt);
 						fflush(stdin);
+						contaLogin=0;
 	                }while(opt!=1 && opt!=2 && opt!=9);
 					break;	
 				
 				case 1: //login motorista
-					system("CLS");
-					printf("                                               Login Motorista\n                                        (login: testemot | senha: 12345)\n\n");
-					getLogin(user, senha);
-					
+					do{
+                        system("CLS");
+    					printf("                                               Login Motorista\n                                        (login: testemot | senha: 12345)\n\n");
+                        getLogin(user, senha);
+                        contaLogin++;
+                    }while(contaLogin<3 && strcmp(user,userMot)!=0 && strcmp(senha,senhaMot)!=0);
 					if(strcmp(user,userMot)==0 && strcmp(senha,senhaMot)==0) {
 						login=true;
 						opt=3;
@@ -64,11 +73,12 @@ int main() {
 					break;
 				
 				case 2: //login ADM
-					system("CLS");
-					printf("                                               Login Admnistrador\n                                        (login: testeadm | senha: 12345)\n\n");
-					
-					getLogin(user, senha);
-					
+                     do{
+    					system("CLS");
+    					printf("                                               Login Admnistrador\n                                        (login: testeadm | senha: 12345)\n\n");
+    					getLogin(user, senha);
+    					contaLogin++;
+                     }while(contaLogin < 3 && strcmp(user,userAdm)!=0 && strcmp(senha,senhaAdm)!=0);
 					if(strcmp(user,userAdm)==0 && strcmp(senha,senhaAdm)==0) {
 						login=true;
 						opt=3;
@@ -476,10 +486,12 @@ void getLogin(char *log, char *pass){
 
 	printf("\n\n\n\n\n\n\n                                                Usuário: ");
 	fgets(log,c,stdin);
+	fflush(stdin);
 	log[strcspn(log,"\n")] = '\0';
 				
 	printf("                                                Senha: ");
 	fgets(pass,c,stdin);
+	fflush(stdin);
 	pass[strcspn(pass,"\n")] = '\0';
 
 
